@@ -56,3 +56,6 @@ required = [
 [[prune.project]]
   name = "github.com/knative/test-infra"
   non-go = false
+
+[[constraint]]
+  name = "github.com/gogo/protobuf"
