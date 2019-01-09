@@ -47,6 +47,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&VirtualService{},
 		&Gateway{},
 		&DestinationRule{},
+		&EnvoyFilter{},
+		&EnvoyFilterList{},
 		&VirtualServiceList{},
 		&GatewayList{},
 		&DestinationRuleList{},

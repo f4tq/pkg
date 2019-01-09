@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	servingDomain = "serving.knative.dev"
+	servingDomain = "knative.dev/serving"
 	badDomain     = "test.domain"
 	testComponent = "testComponent"
 	testProj      = "test-project"
@@ -38,12 +38,6 @@ var (
 		component   string
 		expectedErr string
 	}{{
-		name:        "backendKeyMissing",
-		cm:          map[string]string{"": ""},
-		domain:      servingDomain,
-		component:   testComponent,
-		expectedErr: "metrics.backend-destination key is missing",
-	}, {
 		name: "unsupportedBackend",
 		cm: map[string]string{
 			"metrics.backend-destination":    "unsupported",
@@ -98,8 +92,8 @@ var (
 				backendDestination: Stackdriver,
 				reportingPeriod:    60 * time.Second},
 		}, {
-			name:      "validPrometheus",
-			cm:        map[string]string{"metrics.backend-destination": "prometheus"},
+			name:      "backendKeyMissing",
+			cm:        map[string]string{"": ""},
 			domain:    servingDomain,
 			component: testComponent,
 			expectedConfig: metricsConfig{
@@ -119,6 +113,16 @@ var (
 				backendDestination:   Stackdriver,
 				stackdriverProjectID: anotherProj,
 				reportingPeriod:      60 * time.Second},
+		}, {
+			name:      "validPrometheus",
+			cm:        map[string]string{"metrics.backend-destination": "prometheus"},
+			domain:    servingDomain,
+			component: testComponent,
+			expectedConfig: metricsConfig{
+				domain:             servingDomain,
+				component:          testComponent,
+				backendDestination: Prometheus,
+				reportingPeriod:    5 * time.Second},
 		}, {
 			name: "validCapitalStackdriver",
 			cm: map[string]string{"metrics.backend-destination": "Stackdriver",
