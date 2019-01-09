@@ -3,6 +3,8 @@ package v1alpha3
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	google_protobuf3 "github.com/gogo/protobuf/types"
+	"encoding/hex"
+	"fmt"
 )
 
 // +genclient
@@ -155,6 +157,7 @@ func (m *GoogleProtobuf3Struct) MarshalTo(dAtA []byte) (int, error) {
 	return m.MarshalTo(dAtA)
 }
 func (m *GoogleProtobuf3Struct) Unmarshal(dAtA []byte) error {
+	fmt.Printf("GoogleProtobuf3Struct dump:\n%s\n",hex.Dump(dAtA))
 	return m.Unmarshal(dAtA)
 }
 func (in *GoogleProtobuf3Struct) DeepCopyInto(out *GoogleProtobuf3Struct) {
