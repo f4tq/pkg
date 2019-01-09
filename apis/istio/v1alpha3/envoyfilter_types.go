@@ -5,7 +5,6 @@ import (
 	google_protobuf3 "github.com/gogo/protobuf/types"
 	"fmt"
 	"encoding/hex"
-	proto "github.com/gogo/protobuf/proto"
 	"encoding/json"
 )
 
@@ -148,9 +147,6 @@ type EnvoyFilter_Filter struct {
 	FilterConfig *GoogleProtobuf3Struct `protobuf:"bytes,5,opt,name=filter_config,json=filterConfig" json:"filter_config,omitempty"`
 }
 
-func init() {
-	proto.RegisterType((*GoogleProtobuf3Struct)(nil), "google.protobuf.Struct")
-}
 
 // GoogleProtobuf3Struct - override to do the right DeepCopyInto
 type GoogleProtobuf3Struct struct {
@@ -171,7 +167,17 @@ func (m *GoogleProtobuf3Struct) UnmarshalJSON(dAtA []byte) error {
 	fmt.Printf("GoogleProtobuf3Struct UnmarshalJSON dump:\n%s\n", hex.Dump(dAtA))
 	return json.Unmarshal(dAtA, m.Struct)
 }
+func (c *GoogleProtobuf3Struct) MarshalYAML() (interface{}, error){
+	return &c.Struct,nil
+}
+func (c *GoogleProtobuf3Struct) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	if err := unmarshal(&c.Struct); err != nil {
+		return err
+	}
+	fmt.Printf("GoogleProtobuf3Struct UnmarshalYAML dump:\n%+v\n",c.Struct )
 
+	return nil
+}
 func (m *GoogleProtobuf3Struct) Unmarshal(dAtA []byte) error {
 	fmt.Printf("GoogleProtobuf3Struct Unmarshal dump:\n%s\n", hex.Dump(dAtA))
 	return m.Struct.Unmarshal(dAtA)
@@ -184,3 +190,4 @@ func (in *GoogleProtobuf3Struct) DeepCopyInto(out *GoogleProtobuf3Struct) {
 		}
 	}
 }
+
