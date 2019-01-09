@@ -5,6 +5,7 @@ import (
 	google_protobuf3 "github.com/gogo/protobuf/types"
 	"encoding/hex"
 	"fmt"
+	"encoding/json"
 )
 
 // +genclient
@@ -151,14 +152,23 @@ type GoogleProtobuf3Struct struct {
 	google_protobuf3.Struct
 }
 func (m *GoogleProtobuf3Struct) Marshal() (dAtA []byte, err error) {
-	return m.Marshal()
+	return m.Struct.Marshal()
+}
+func (m *GoogleProtobuf3Struct) MarshalJSON() (dAtA []byte, err error) {
+	return json.Marshal(m.Struct)
 }
 func (m *GoogleProtobuf3Struct) MarshalTo(dAtA []byte) (int, error) {
-	return m.MarshalTo(dAtA)
+	return m.Struct.MarshalTo(dAtA)
 }
+
+func (m *GoogleProtobuf3Struct) UnmarshalJSON(dAtA []byte) error {
+	fmt.Printf("GoogleProtobuf3Struct UnmarshalJSON dump:\n%s\n",hex.Dump(dAtA))
+	return json.Unmarshal(dAtA,m.Struct)
+}
+
 func (m *GoogleProtobuf3Struct) Unmarshal(dAtA []byte) error {
-	fmt.Printf("GoogleProtobuf3Struct dump:\n%s\n",hex.Dump(dAtA))
-	return m.Unmarshal(dAtA)
+	fmt.Printf("GoogleProtobuf3Struct Unmarshal dump:\n%s\n",hex.Dump(dAtA))
+	return m.Struct.Unmarshal(dAtA)
 }
 func (in *GoogleProtobuf3Struct) DeepCopyInto(out *GoogleProtobuf3Struct) {
 	if out != nil {
